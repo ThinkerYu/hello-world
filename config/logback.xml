@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,,,, -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %p [%t] (%file:%line\) - %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="upchatlog"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>../logs/upchat.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../logs/upchat.log.%d.%i</fileNamePattern>
+            <maxHistory>1</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %d %p [%t] (%file:%line\)- %m%n
+            </pattern>
+        </encoder>
+    </appender>
+    <root level="error">
+        <appender-ref ref="STDOUT" />
+    </root>
+    <logger name="com.upchat" level="debug">
+        <appender-ref ref="upchatlog" />
+    </logger>
+</configuration>

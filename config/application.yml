@@ -1,0 +1,46 @@
+---
+applications:
+- name: gs-rest-service
+  memory: 256M
+  instances: 1
+  host: rest-service
+  domain: guides.spring.io
+  path: build/libs/upchat-mail-0.1.0.jar
+
+server:
+  servlet-path: /api/*
+  
+spring:
+  mvc:
+    static-path-pattern: /static/**
+    throw-exception-if-no-handler-found: true
+    servlet:
+      load-on-startup: 1
+  http:
+    multipart:
+      enabled: true
+      max-file-size: 30Mb
+      max-request-size: 30Mb
+  datasource:
+    jndi-name: java:/upchatmail
+### for local test
+#    jndi-name: upchatmail
+  jpa:
+    hibernate:
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+logging:
+  config: classpath:config/logback.xml
+### for local test
+#  config: config/logback-test.xml
+
+# 以下为兼容性配置
+# 兼容同一台机器部署多个应用, 防止端口冲突, 配置由数据库迁移到应用配置文件
+# !!! 部署时需要区分每个应用的参数 !!!
+redis:
+  prefix.partition.name: mail_ptt_gen_
+#  prefix.partition.name: mail_ptt_wht_
+
+office:
+#  pdfconverter.ports: 9101,9102,9103
+  pdfconverter.ports: 9106,9107,9108
